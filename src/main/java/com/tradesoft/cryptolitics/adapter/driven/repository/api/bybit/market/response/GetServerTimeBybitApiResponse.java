@@ -1,4 +1,4 @@
-package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.response;
+package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

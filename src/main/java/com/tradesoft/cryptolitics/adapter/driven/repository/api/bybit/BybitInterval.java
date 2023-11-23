@@ -1,6 +1,6 @@
 package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit;
 
-public enum Interval {
+public enum BybitInterval {
     M1("1"),
     M3("3"),
     M5("5"),
@@ -17,7 +17,7 @@ public enum Interval {
 
     public final String bybitInterval;
 
-    Interval(String bybitInterval) {
+    BybitInterval(String bybitInterval) {
         this.bybitInterval = bybitInterval;
     }
 }
