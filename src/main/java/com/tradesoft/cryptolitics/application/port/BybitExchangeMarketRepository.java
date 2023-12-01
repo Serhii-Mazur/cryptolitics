@@ -2,10 +2,10 @@ package com.tradesoft.cryptolitics.application.port;
 
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.GetKlineRequestParameters;
 import com.tradesoft.cryptolitics.domain.ServerTime;
-import com.tradesoft.cryptolitics.domain.market.Kline;
+import com.tradesoft.cryptolitics.domain.market.KLineGraph;
 
 public interface BybitExchangeMarketRepository {
     ServerTime getServerTime();
 
-    Kline getKline(GetKlineRequestParameters params);
+    KLineGraph getKline(GetKlineRequestParameters params);
 }

@@ -8,7 +8,7 @@ group = "com.tradesoft"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -22,15 +22,19 @@ repositories {
 }
 
 dependencies {
-	compileOnly("org.projectlombok:lombok")
+	implementation("org.jetbrains:annotations:24.0.0")
+    compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 
+	implementation("org.springframework.boot:spring-boot-starter-validation:3.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.4")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-	testImplementation("org.testcontainers:junit-jupiter")
+//	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+	testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
 	testImplementation("org.wiremock:wiremock:3.2.0")
 }
 

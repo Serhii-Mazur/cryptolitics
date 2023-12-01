@@ -3,7 +3,7 @@ package com.tradesoft.cryptolitics.domain.market;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record CandleStick(
+public record KLine(
         LocalDateTime startTime,    // Start time of the candle. UTC
         BigDecimal openPrice,       // Open price
         BigDecimal highPrice,       // Highest price

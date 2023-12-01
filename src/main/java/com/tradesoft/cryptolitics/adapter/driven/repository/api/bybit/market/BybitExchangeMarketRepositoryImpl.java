@@ -5,7 +5,7 @@ import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.map
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetKlineBybitApiResponse;
 import com.tradesoft.cryptolitics.application.port.BybitExchangeMarketRepository;
 import com.tradesoft.cryptolitics.domain.ServerTime;
-import com.tradesoft.cryptolitics.domain.market.Kline;
+import com.tradesoft.cryptolitics.domain.market.KLineGraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public class BybitExchangeMarketRepositoryImpl implements BybitExchangeMarketRep
     }
 
     @Override
-    public Kline getKline(GetKlineRequestParameters params) {
+    public KLineGraph getKline(GetKlineRequestParameters params) {
         GetKlineBybitApiResponse kline = bybitMarketApi.getKline(
                 params.category(),
                 params.symbol(),

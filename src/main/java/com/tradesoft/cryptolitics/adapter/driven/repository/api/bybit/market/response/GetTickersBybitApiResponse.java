@@ -2,6 +2,8 @@ package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.re
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -9,21 +11,28 @@ import java.util.List;
 public record GetTickersBybitApiResponse(
         @JsonProperty("retCode")
         int retCode,
+        @NotEmpty
         @JsonProperty("retMsg")
         String retMsg,
+        @NotNull
         @JsonProperty("result")
         Result result,
+        @NotEmpty
         @JsonProperty("time")
         long time
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public record Result(
+            @NotNull
             @JsonProperty("category")
             String category, // spot
+            @NotNull
             @JsonProperty("list")
             List<Ticker> list
     ) {
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public record Ticker(
             @JsonProperty("symbol")
             String symbol,         //	Symbol name

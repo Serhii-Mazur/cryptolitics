@@ -2,6 +2,8 @@ package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.re
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -9,19 +11,24 @@ import java.util.List;
 public record GetKlineBybitApiResponse(
         @JsonProperty("retCode")
         int retCode,
+        @NotEmpty
         @JsonProperty("retMsg")
         String retMsg,
         @JsonProperty("time")
         long time,
+        @NotNull
         @JsonProperty("result")
         Kline result
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record Kline(
+            @NotEmpty
             @JsonProperty("symbol")
             String symbol,   // BTCUSD
+            @NotEmpty
             @JsonProperty("category")
             String category, // spot
+            @NotNull
             @JsonProperty("list")
             List<List<String>> list
             /*

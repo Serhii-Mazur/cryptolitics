@@ -1,8 +1,9 @@
 package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.mapper;
 
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetKlineBybitApiResponse;
-import com.tradesoft.cryptolitics.domain.market.CandleStick;
-import com.tradesoft.cryptolitics.domain.market.Kline;
+import com.tradesoft.cryptolitics.domain.market.KLine;
+import com.tradesoft.cryptolitics.domain.market.KLineGraph;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -14,13 +15,10 @@ import java.util.stream.Collectors;
 
 public class KlineMapper {
 
-    public static Kline toDomain(GetKlineBybitApiResponse.Kline dto) {
-        if (dto != null) {
+    public static KLineGraph toDomain(@NotNull GetKlineBybitApiResponse.Kline dto) {
+        if (dto != null && dto.list() != null) {
 
-            return new Kline(
-//                    Category.valueOf(dto.category().toUpperCase()),
-                    dto.category(),
-//                    CoinPair.valueOf(dto.symbol().toUpperCase()),
+            return new KLineGraph(
                     dto.symbol(),
                     dto.list().stream()
                             .filter(Objects::nonNull)
@@ -33,19 +31,23 @@ public class KlineMapper {
         }
     }
 
-    public static CandleStick mapCandleStick(List<String> list) {
+    public static KLine mapCandleStick(@NotNull List<String> candleStick) {
+        if (candleStick.isEmpty()) {
+            throw new IllegalStateException();
+        } else {
 
-        return new CandleStick(
-                LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(Long.parseLong(list.get(0))),
-                        ZoneId.of("UTC")
-                ),
-                BigDecimal.valueOf(Long.parseLong(list.get(1))),
-                BigDecimal.valueOf(Long.parseLong(list.get(2))),
-                BigDecimal.valueOf(Long.parseLong(list.get(3))),
-                BigDecimal.valueOf(Long.parseLong(list.get(4))),
-                BigDecimal.valueOf(Long.parseLong(list.get(5))),
-                BigDecimal.valueOf(Long.parseLong(list.get(6)))
-        );
+            return new KLine(
+                    LocalDateTime.ofInstant(
+                            Instant.ofEpochMilli(Long.parseLong(candleStick.get(0))),
+                            ZoneId.of("UTC")
+                    ),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(1))),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(2))),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(3))),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(4))),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(5))),
+                    BigDecimal.valueOf(Double.parseDouble(candleStick.get(6)))
+            );
+        }
     }
 }

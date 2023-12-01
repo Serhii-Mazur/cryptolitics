@@ -10,12 +10,16 @@ import java.time.ZoneId;
 public class ServerTimeMapper {
 
     public static ServerTime toDomain(GetServerTimeBybitApiResponse apiResponse) {
+        if (apiResponse == null) {
+            throw new IllegalStateException();
+        } else {
 
-        return new ServerTime(
-                LocalDateTime.ofInstant(
-                        Instant.ofEpochMilli(apiResponse.time()),
-                        ZoneId.systemDefault()
-                )
-        );
+            return new ServerTime(
+                    LocalDateTime.ofInstant(
+                            Instant.ofEpochMilli(apiResponse.time()),
+                            ZoneId.systemDefault()
+                    )
+            );
+        }
     }
 }
