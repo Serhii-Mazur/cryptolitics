@@ -33,8 +33,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mockito:mockito-core:5.8.0")
+
 //	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-	testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
+//	testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
 	testImplementation("org.wiremock:wiremock:3.2.0")
 }
 

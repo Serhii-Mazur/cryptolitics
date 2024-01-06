@@ -8,7 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record GetKlineBybitApiResponse(
+public record GetKLineBybitApiResponse(
+        @NotEmpty
         @JsonProperty("retCode")
         int retCode,
         @NotEmpty
@@ -18,10 +19,11 @@ public record GetKlineBybitApiResponse(
         long time,
         @NotNull
         @JsonProperty("result")
-        Kline result
-) {
+        GetKLineBybitApiResponse.KLine result
+) implements BaseBybitApiResponse {
+
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public record Kline(
+    public record KLine(
             @NotEmpty
             @JsonProperty("symbol")
             String symbol,   // BTCUSD

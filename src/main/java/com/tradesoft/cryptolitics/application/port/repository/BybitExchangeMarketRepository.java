@@ -1,4 +1,4 @@
-package com.tradesoft.cryptolitics.application.port;
+package com.tradesoft.cryptolitics.application.port.repository;
 
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.GetKlineRequestParameters;
 import com.tradesoft.cryptolitics.domain.ServerTime;

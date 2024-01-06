@@ -1,19 +1,25 @@
 package com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market;
 
-import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.mapper.KlineMapper;
+import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.mapper.KlineGraphMapper;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.mapper.ServerTimeMapper;
-import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetKlineBybitApiResponse;
-import com.tradesoft.cryptolitics.application.port.BybitExchangeMarketRepository;
+import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetKLineBybitApiResponse;
+import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetServerTimeBybitApiResponse;
+import com.tradesoft.cryptolitics.application.port.repository.BybitExchangeMarketRepository;
 import com.tradesoft.cryptolitics.domain.ServerTime;
+import com.tradesoft.cryptolitics.domain.constants.CoinPair;
 import com.tradesoft.cryptolitics.domain.market.KLineGraph;
+import com.tradesoft.cryptolitics.exception.BybitApiException;
+import feign.FeignException.FeignClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.NoSuchElementException;
 
 @Repository
 public class BybitExchangeMarketRepositoryImpl implements BybitExchangeMarketRepository {
     private final BybitExchangeMarketApiV5 bybitMarketApi;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public BybitExchangeMarketRepositoryImpl(BybitExchangeMarketApiV5 bybitExchangeMarketApiV5) {
@@ -22,25 +28,42 @@ public class BybitExchangeMarketRepositoryImpl implements BybitExchangeMarketRep
 
     @Override
     public ServerTime getServerTime() {
-
-        return ServerTimeMapper.toDomain(bybitMarketApi.getServerTime());
+        GetServerTimeBybitApiResponse bybitServerTimeResponse = null;
+        try {
+            bybitServerTimeResponse = bybitMarketApi.getServerTime();
+            bybitServerTimeResponse.validate();
+        } catch (FeignClientException ex) {
+            logger.error("Feign Client Exception! ", ex);
+        } catch (BybitApiException ex) {
+            logger.error("Bybit API Error: ", ex);
+        }
+        if (bybitServerTimeResponse == null) {
+            return null;
+        } else {
+            return ServerTimeMapper.toDomain(bybitServerTimeResponse);
+        }
     }
 
     @Override
     public KLineGraph getKline(GetKlineRequestParameters params) {
-        GetKlineBybitApiResponse kline = bybitMarketApi.getKline(
-                params.category(),
-                params.symbol(),
-                params.interval(),
-                params.startDateTime(),
-                params.endDateTime(),
-                params.limit()
-        );
+        try {
+            GetKLineBybitApiResponse kLineResponse = bybitMarketApi.getKline(
+                    params.category(),
+                    params.symbol(),
+                    params.interval(),
+                    params.startDateTime(),
+                    params.endDateTime(),
+                    params.limit()
+            );
+            kLineResponse.validate();
 
-        if (kline != null) {
-            return KlineMapper.toDomain(kline.result());
-        } else {
-            throw new NoSuchElementException(); // TODO: Replace with business exception
+            return KlineGraphMapper.toDomain(kLineResponse.result());
+        } catch (FeignClientException ex) {
+            logger.error("Feign Client Exception! ", ex);
+        } catch (BybitApiException ex) {
+            logger.error("Bybit API Error: ", ex);
         }
+
+        return KLineGraph.empty(CoinPair.valueOf(params.symbol()));
     }
 }

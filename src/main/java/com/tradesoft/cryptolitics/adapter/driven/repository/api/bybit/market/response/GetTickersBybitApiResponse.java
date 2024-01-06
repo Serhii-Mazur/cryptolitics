@@ -14,12 +14,12 @@ public record GetTickersBybitApiResponse(
         @NotEmpty
         @JsonProperty("retMsg")
         String retMsg,
-        @NotNull
-        @JsonProperty("result")
-        Result result,
         @NotEmpty
         @JsonProperty("time")
-        long time
+        long time,
+        @NotNull
+        @JsonProperty("result")
+        Result result
 ) {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record Result(
@@ -35,7 +35,7 @@ public record GetTickersBybitApiResponse(
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record Ticker(
             @JsonProperty("symbol")
-            String symbol,         //	Symbol name
+            String symbol,         //	Symbol name. e.g. BTCUSDT, ETHUSDT
             @JsonProperty("bid1Price")
             String bid1Price,      //	Best bid price
             @JsonProperty("bid1Size")
@@ -63,6 +63,5 @@ public record GetTickersBybitApiResponse(
                                     - used to calculate USD value of the assets in Unified account
                                     - non-collateral margin coin returns "" */
     ) {
-
     }
 }

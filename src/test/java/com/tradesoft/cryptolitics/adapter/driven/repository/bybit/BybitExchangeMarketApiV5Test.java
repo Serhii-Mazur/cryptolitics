@@ -3,6 +3,7 @@ package com.tradesoft.cryptolitics.adapter.driven.repository.bybit;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.BybitExchangeMarketApiV5;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.response.GetServerTimeBybitApiResponse;
 import com.tradesoft.cryptolitics.basetest.BaseMockTest;
+import com.tradesoft.cryptolitics.exception.ApiErrorException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,37 +21,67 @@ public class BybitExchangeMarketApiV5Test extends BaseMockTest {
     @Autowired
     private BybitExchangeMarketApiV5 bybitExchangeMarketApiV5;
 
-    @Test
-    public void getServerTime_should_return_Bybit_server_time() {
-        // Given
-        String url = "/v5/market/time";
-        String responseObject = """
-                    {
-                        "retCode": 0,
-                        "retMsg": "OK",
-                        "result": {
-                            "timeSecond": "1697469632",
-                            "timeNano": "1697469632991732642"
-                        },
-                        "retExtInfo": {},
-                        "time": 1697469632991
-                    }
-                """;
-        mockGet(url, responseObject, HttpStatus.OK);
+        @DisplayName("should return Bybit server time response")
+        @Test
+        void getServerTime_OK() {
+            // Given
+            String url = "/v5/market/time";
+            String responseObject = """
+                        {
+                            "retCode": 0,
+                            "retMsg": "OK",
+                            "result": {
+                                "timeSecond": "1697469632",
+                                "timeNano": "1697469632991732642"
+                            },
+                            "retExtInfo": {},
+                            "time": 1697469632991
+                        }
+                    """;
+            mockGet(url, responseObject, HttpStatus.OK);
 
-        GetServerTimeBybitApiResponse expected = new GetServerTimeBybitApiResponse(
-                0,
-                "OK",
-                1697469632991L,
-                new GetServerTimeBybitApiResponse.ServerTime("1697469632", "1697469632991732642")
-        );
+            GetServerTimeBybitApiResponse expected = new GetServerTimeBybitApiResponse(
+                    0,
+                    "OK",
+                    1697469632991L,
+                    new GetServerTimeBybitApiResponse.ServerTime("1697469632", "1697469632991732642")
+            );
 
-        // When
-        GetServerTimeBybitApiResponse actual = bybitExchangeMarketApiV5.getServerTime();
+            // When
+            GetServerTimeBybitApiResponse actual = bybitExchangeMarketApiV5.getServerTime();
 
-        // Then
-        assertEquals(expected, actual);
-    }
+            // Then
+            assertEquals(expected, actual);
+        }
+
+        @DisplayName("should return ApiErrorException when internal server error happened")
+        @Test
+        void getServerTime() {
+            // Given
+            String url = "/v5/market/time";
+            String responseObject = """
+                        {
+                            "retCode": 10016,
+                            "retMsg": "Server error.",
+                            "result": {},
+                            "retExtInfo": {},
+                            "time": 1697469632991
+                        }
+                    """;
+            mockGet(url, responseObject, HttpStatus.OK);
+
+            ApiErrorException expected = new ApiErrorException(
+                    10016,
+                    "Server error."
+            );
+
+            // When
+            bybitExchangeMarketApiV5.getServerTime();
+
+            // Then
+//            assertEquals(expected, actual);
+        }
+//    }
 
 //    @Test
 //    public void getKlineBybitApiResponse_should_return_Bybit_Kline() {

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record GetServerTimeBybitApiResponse(
+        @NotEmpty
         @JsonProperty("retCode")
         int retCode,
         @NotEmpty
@@ -17,7 +18,7 @@ public record GetServerTimeBybitApiResponse(
         @NotNull
         @JsonProperty("result")
         ServerTime result
-) {
+) implements BaseBybitApiResponse {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record ServerTime(
             @NotEmpty

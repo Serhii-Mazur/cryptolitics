@@ -3,8 +3,8 @@ package com.tradesoft.cryptolitics.application;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.BybitInterval;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.BybitExchangeMarketApiV5;
 import com.tradesoft.cryptolitics.adapter.driven.repository.api.bybit.market.GetKlineRequestParameters;
-import com.tradesoft.cryptolitics.application.port.BybitExchangeMarketRepository;
-import com.tradesoft.cryptolitics.application.port.KLineRepository;
+import com.tradesoft.cryptolitics.application.port.repository.BybitExchangeMarketRepository;
+import com.tradesoft.cryptolitics.application.port.repository.KLineH1Repository;
 import com.tradesoft.cryptolitics.domain.ServerTime;
 import com.tradesoft.cryptolitics.domain.constants.Category;
 import com.tradesoft.cryptolitics.domain.constants.CoinPair;
@@ -24,13 +24,13 @@ public class AppTest {
 
     private final BybitExchangeMarketRepository bybitExchangeMarketRepository;
     private final BybitExchangeMarketApiV5 bybitApi;
-    private final KLineRepository klineRepository;
+    private final KLineH1Repository klineRepository;
 
     @Autowired
     public AppTest(
             BybitExchangeMarketRepository bybitExchangeMarketRepository,
             BybitExchangeMarketApiV5 bybitApi,
-            KLineRepository kLineRepository) {
+            KLineH1Repository kLineRepository) {
         this.bybitExchangeMarketRepository = bybitExchangeMarketRepository;
         this.bybitApi = bybitApi;
         this.klineRepository = kLineRepository;
@@ -44,26 +44,17 @@ public class AppTest {
 
         GetKlineRequestParameters kLineParameters = new GetKlineRequestParameters(
                 Category.SPOT.name().toLowerCase(),
-                CoinPair.TONUSDT.name(),
+                CoinPair.BTCUSDT.name(),
                 BybitInterval.H1.bybitInterval,
 //                LocalDateTime.now().minusHours(24L).toEpochSecond(ZoneOffset.UTC) * 1000L,
                 null,
                 null,
-                1
+                10
         );
         KLineGraph kLineGraph = bybitExchangeMarketRepository.getKline(kLineParameters);
-//        GetKlineBybitApiResponse kLineResponse = bybitApi.getKline(
-//                kLineParameters.category(),
-//                kLineParameters.symbol(),
-//                kLineParameters.interval(),
-////                kLineParameters.startDateTime(),
-//                null,
-//                null,
-//                1
-//        );
+
         System.out.println("=========================================================");
 
-//        System.out.println(kLine.coinPair().name() + kLine.category().name());
         kLineGraph.kLines().forEach(System.out::println);
         List<KLine> kLines = kLineGraph.kLines();
         klineRepository.saveAll(kLineGraph.coinPair(), kLines);
