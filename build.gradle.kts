@@ -22,9 +22,10 @@ repositories {
 }
 
 dependencies {
-	implementation("org.jetbrains:annotations:24.0.0")
     compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+
+	implementation("org.jetbrains:annotations:24.0.0")
 
 	implementation("org.springframework.boot:spring-boot-starter-validation:3.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
