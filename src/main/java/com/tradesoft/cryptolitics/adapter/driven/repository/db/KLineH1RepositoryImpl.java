@@ -16,7 +16,6 @@ public class KLineH1RepositoryImpl implements KLineH1Repository {
 
     private final KLineH1MongoRepository kLineMongoRepository;
 
-
     @Autowired
     public KLineH1RepositoryImpl(KLineH1MongoRepository kLineMongoRepository) {
         this.kLineMongoRepository = kLineMongoRepository;
@@ -28,6 +27,8 @@ public class KLineH1RepositoryImpl implements KLineH1Repository {
 
             throw new IllegalStateException(String.format("Attempt to save empty or null KLine list! Coin Pair:[%s]", coinPair));
         } else {
+            System.out.println("Mapping: " + coinPair + " / " + kLines);
+
             kLineMongoRepository.saveAll(kLines
                     .stream()
                     .map((KLine kLine) -> KLineEntityMapper.mapEntity(coinPair, kLine))

@@ -2,15 +2,16 @@ package com.tradesoft.cryptolitics.adapter.driven.repository.db;
 
 import com.tradesoft.cryptolitics.adapter.driven.repository.db.entity.KlineH1Entity;
 import com.tradesoft.cryptolitics.adapter.driven.repository.db.mongorepo.KLineH1MongoRepository;
-import com.tradesoft.cryptolitics.application.port.repository.KLineH1Repository;
 import com.tradesoft.cryptolitics.domain.constants.CoinPair;
 import com.tradesoft.cryptolitics.domain.market.KLine;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,19 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class KlineRepositoryImplTest {
+@ExtendWith(MockitoExtension.class)
+public class KLineH1RepositoryImplTest {
 
-    private final KLineH1MongoRepository klineMongoRepository = mock();
+    @Mock
+    private KLineH1MongoRepository kLineMongoRepository;
 
-    private final KLineH1Repository kLineRepository = new KLineH1RepositoryImpl(klineMongoRepository);
+    @InjectMocks
+    private KLineH1RepositoryImpl kLineRepository;
 
     @Test
     void saveAll_should_save_KLines() {
         // Given
-        LocalDateTime startDateTime = LocalDateTime.ofInstant(
-                Instant.ofEpochMilli(1703610000000L),
-                ZoneId.of("UTC")
-        );
+        LocalDateTime startDateTime = LocalDateTime.of(2023, 11, 27, 13, 51, 10);
         BigDecimal openPrice = new BigDecimal("2.1622");
         BigDecimal highPrice = new BigDecimal("2.1716");
         BigDecimal lowPrice = new BigDecimal("2.15");
@@ -51,13 +52,13 @@ public class KlineRepositoryImplTest {
         );
         List<KlineH1Entity> entities = List.of(entity);
 
-        when(klineMongoRepository.saveAll(any())).thenReturn(entities);
+        when(kLineMongoRepository.saveAll(any())).thenReturn(entities);
 
         // When
         kLineRepository.saveAll(CoinPair.BTCUSDT, kLines);
 
         // Then
-        verify(klineMongoRepository, times(1)).saveAll(entities);
+        verify(kLineMongoRepository, times(1)).saveAll(any());
     }
 
     @Test

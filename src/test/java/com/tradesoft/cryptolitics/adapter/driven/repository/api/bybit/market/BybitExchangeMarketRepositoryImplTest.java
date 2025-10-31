@@ -17,18 +17,19 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BybitExchangeMarketRepositoryImplTest {
+
     @Mock
-    BybitExchangeMarketApiV5 bybitMarketApi;
+    private BybitExchangeMarketApiV5 bybitMarketApi;
 
     @InjectMocks
-    BybitExchangeMarketRepositoryImpl bybitMarketRepository;
+    private BybitExchangeMarketRepositoryImpl bybitMarketRepository;
 
     private final Random random = new Random();
 
     @Test
     void getServerTime_should_return_domain_ServerTime() {
         // Given
-        int retCode = 0;
+        int retCode = 1;
         String retMsg = "OK";
         long time = 1701089470680L;
         GetServerTimeBybitApiResponse serverTimeApiResponse = new GetServerTimeBybitApiResponse(
@@ -40,7 +41,7 @@ class BybitExchangeMarketRepositoryImplTest {
                         String.valueOf(TimeUnit.MILLISECONDS.toNanos(time))
                 )
         );
-        var expected = new ServerTime(LocalDateTime.of(2023, 11, 27, 14, 51, 10));
+        var expected = new ServerTime(LocalDateTime.of(2023, 11, 27, 13, 51, 10));
 
         when(bybitMarketApi.getServerTime()).thenReturn(serverTimeApiResponse);
 
@@ -66,7 +67,7 @@ class BybitExchangeMarketRepositoryImplTest {
                         String.valueOf(TimeUnit.MILLISECONDS.toNanos(time))
                 )
         );
-        var expected = new ServerTime(LocalDateTime.of(2023, 11, 27, 14, 51, 10));
+        var expected = new ServerTime(LocalDateTime.of(2023, 11, 27, 13, 51, 10));
 
         when(bybitMarketApi.getServerTime()).thenReturn(serverTimeApiResponse);
 

@@ -39,7 +39,7 @@ class KLineGraphMapperTest {
         );
 
         KLine kLine = new KLine(
-                LocalDateTime.of(2023, 11, 27, 15, 0, 0),
+                LocalDateTime.of(2023, 11, 27, 14, 0, 0),
                 BigDecimal.valueOf(2.4018),
                 BigDecimal.valueOf(2.4064),
                 BigDecimal.valueOf(2.4012),

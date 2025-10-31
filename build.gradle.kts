@@ -39,6 +39,8 @@ dependencies {
 //	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 //	testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.11.0")
 	testImplementation("org.wiremock:wiremock:3.2.0")
+
+    implementation("org.ta4j:ta4j-core:0.18")
 }
 
 tasks.withType<Test> {

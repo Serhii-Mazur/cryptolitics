@@ -12,15 +12,19 @@ public class KLineEntityMapper {
 
     public static KlineH1Entity mapEntity(CoinPair coinPair, KLine kLine) {
 
-        return new KlineH1Entity(
-                mapKLineId(coinPair, kLine.startTime()),
-                kLine.openPrice(),
-                kLine.highPrice(),
-                kLine.lowPrice(),
-                kLine.closePrice(),
-                kLine.volume(),
-                kLine.turnover()
-        );
+        if (kLine != null) {
+            return new KlineH1Entity(
+                    mapKLineId(coinPair, kLine.startTime()),
+                    kLine.openPrice(),
+                    kLine.highPrice(),
+                    kLine.lowPrice(),
+                    kLine.closePrice(),
+                    kLine.volume(),
+                    kLine.turnover()
+            );
+        } else {
+            throw new IllegalArgumentException("KLine is null");
+        }
     }
 
     public static KLineGraph mapDomainGraph(List<KlineH1Entity> entities) {

@@ -4,7 +4,6 @@ public enum Category {
     SPOT,
     LINEAR,
     INVERSE,
-
     UNKNOWN;
 
     public static Category getValue(String stringValue) {
